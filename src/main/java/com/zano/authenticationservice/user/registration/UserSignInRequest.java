@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.user;
+package com.zano.authenticationservice.user.registration;
 
 import com.zano.authenticationservice.user.validation.UniqueUserEmail;
 
