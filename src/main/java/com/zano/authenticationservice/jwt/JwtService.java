@@ -2,7 +2,7 @@ package com.zano.authenticationservice.jwt;
 
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.authentication.UserAuthentication;
+import com.zano.authenticationservice.user.dto.UserAuthentication;
 
 import lombok.RequiredArgsConstructor;
 

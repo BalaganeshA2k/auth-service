@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.authentication.UserAuthentication;
+import com.zano.authenticationservice.user.dto.UserAuthentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

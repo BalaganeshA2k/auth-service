@@ -5,10 +5,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.authentication.UserAuthentication;
 import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.otp.TotpValidator.TotpValidationResult;
 import com.zano.authenticationservice.otp.exception.EmailAndOtpDoesNotMatchException;
 import com.zano.authenticationservice.otp.exception.OtpExpiredException;
+import com.zano.authenticationservice.user.dto.UserAuthentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,7 +20,6 @@ public class TotpService {
     private final TotpGenerator totpGenerator;
     private final EmailOtpSender totOtpSender;
     private final TotpValidator totpValidator;
-    private final JwtService jwtService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     record OtpGeneratedEvent(Totp totp) {
@@ -42,13 +42,7 @@ public class TotpService {
         return totpValidator.isEmailHasNoActiveOtp(email);
     }
 
-    public UserAuthentication getUserAuthentication(String emailId, String otp) {
-        return switch (totpValidator.validate(emailId, otp)) {
-            case EMAIL_AND_OTP_DOES_NOT_MATCH ->
-                throw new EmailAndOtpDoesNotMatchException();
-            case OTP_EXPRIRED -> throw new OtpExpiredException();
-            case VALIDATION_SUCCESS -> jwtService.generateAuthenticationToken(emailId);
-        };
+    public TotpValidationResult validate(String emailId, String otp) {
+        return totpValidator.validate(emailId, otp);
     }
-
 }

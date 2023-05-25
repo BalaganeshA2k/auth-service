@@ -14,7 +14,7 @@ public class TotpValidator {
     private final TotpRepository totpRepository;
     private final Clock clock;
 
-    enum TotpValidationResult {
+    public enum TotpValidationResult {
         EMAIL_AND_OTP_DOES_NOT_MATCH,
         OTP_EXPRIRED,
         VALIDATION_SUCCESS;
