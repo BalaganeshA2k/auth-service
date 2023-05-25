@@ -1,5 +1,6 @@
 package com.zano.authenticationservice.user;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.zano.authenticationservice.authority.AuthorityService;
@@ -16,13 +17,15 @@ public class UserDetailService {
   private final AuthorityService authorityService;
   private final UserNameNotFoundExceptionSupplier userNameNotFoundExceptionSupplier;
   private final JwtService jwtService;
+  private final PasswordEncoder passwordEncoder;
 
   public void saveNewUser(NewUser newUser, String authorisationHeaderValue) {
     var email = jwtService.extractSubjectFromBearerToken(authorisationHeaderValue);
+    String encodedPassword = passwordEncoder.encode(newUser.password());
     var user = UserDetail.builder()
         .username(newUser.username())
         .userEmail(email)
-        .password(newUser.password())
+        .password(encodedPassword)
         .authorities(authorityService.getDefaultUserAuthority())
         .build();
     userDetailRepository.save(user);
