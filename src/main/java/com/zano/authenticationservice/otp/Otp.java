@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Totp {
+public class Otp {
     @Id
     private String email;
     private String code;

@@ -19,14 +19,14 @@ public class EmailOtpSender {
     @Value("spring.mail.username")
     private String applicationEmail;
     @Value("${user.sign-in.otp.expirtation.seconds}")
-    private long totpExpiration;
+    private long otpExpiration;
 
-    public void sendOtp(Totp totp) throws MessagingException {
+    public void sendOtp(Otp otp) throws MessagingException {
         var mail = javaMailSender.createMimeMessage();
         var helper = new MimeMessageHelper(mail);
-        helper.addTo(totp.getEmail());
+        helper.addTo(otp.getEmail());
         helper.setFrom(applicationEmail);
-        helper.setText(getOtpEmailContent(totp), true);
+        helper.setText(getOtpEmailContent(otp), true);
         helper.setSubject("ZANO Sign-in otp");
         javaMailSender.send(helper.getMimeMessage());
     }
@@ -39,11 +39,11 @@ public class EmailOtpSender {
     }
 
     @SneakyThrows
-    String getOtpEmailContent(Totp totp) {
+    String getOtpEmailContent(Otp otp) {
         return otpEmailTemplate()
-                .replace("${USER_EMAIL}", totp.getEmail())
-                .replace("${TOTP}", totp.getCode())
-                .replace("${TOTP_EXPIRATION}", String.valueOf(totpExpiration))
+                .replace("${USER_EMAIL}", otp.getEmail())
+                .replace("${TOTP}", otp.getCode())
+                .replace("${TOTP_EXPIRATION}", String.valueOf(otpExpiration))
                 .replace("${EXPIRATION_UNIT}", "seconds");
 
     }

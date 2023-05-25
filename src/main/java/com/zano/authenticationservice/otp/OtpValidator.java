@@ -10,37 +10,37 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class TotpValidator {
-    private final TotpRepository totpRepository;
+public class OtpValidator {
+    private final OtpRepository otpRepository;
     private final Clock clock;
 
-    public enum TotpValidationResult {
+    public enum OtpValidationResult {
         EMAIL_AND_OTP_DOES_NOT_MATCH,
         OTP_EXPRIRED,
         VALIDATION_SUCCESS;
     }
 
     public boolean isEmailHasNoActiveOtp(String email) {
-        return totpRepository.findById(email)
+        return otpRepository.findById(email)
                 .map(this::isExpired)
                 .orElse(true);
     }
 
-    private boolean isExpired(Totp totp) {
+    private boolean isExpired(Otp otp) {
         var now = clock.instant();
-        return totp.getExpireAt()
+        return otp.getExpireAt()
                 .isBefore(now);
     }
 
-    public TotpValidationResult validate(String emailId, String otp) {
-        var totp = totpRepository.findById(emailId)
+    public OtpValidationResult validate(String emailId, String otp) {
+        var repoOtp = otpRepository.findById(emailId)
                 .orElseThrow(() -> new OtpNotGeneratedException());
-        if (!totp.getCode().equals(otp))
-            return TotpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
-        if (isExpired(totp))
-            return TotpValidationResult.OTP_EXPRIRED;
-        totpRepository.deleteById(emailId);
-        return TotpValidationResult.VALIDATION_SUCCESS;
+        if (!repoOtp.getCode().equals(otp))
+            return OtpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
+        if (isExpired(repoOtp))
+            return OtpValidationResult.OTP_EXPRIRED;
+        otpRepository.deleteById(emailId);
+        return OtpValidationResult.VALIDATION_SUCCESS;
     }
 
 }

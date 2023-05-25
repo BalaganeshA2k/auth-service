@@ -9,22 +9,22 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class TotpGenerator {
-    private final TotpRepository totpRepository;
+public class OtpGenerator {
+    private final OtpRepository otpRepository;
     private final Clock clock;
     @Value("${user.sign-in.otp.expirtation.seconds}")
-    private int totpExpiration;
+    private int otpExpiration;
 
     @Value("${user.sign-in.otp.length}")
     private int codeLength;
     private final RandomCodeGenerator randomCodeGenerator;
 
-    public Totp generateOtpForEmail(String email) {
+    public Otp generateOtpForEmail(String email) {
         var code = randomCodeGenerator.generateRandomCode(codeLength);
         var now = clock.instant();
-        var expiry = now.plusSeconds(totpExpiration);
-        var totp = new Totp(email, code, now, expiry);
-        totpRepository.saveAndFlush(totp);
-        return totp;
+        var expiry = now.plusSeconds(otpExpiration);
+        var otp = new Otp(email, code, now, expiry);
+        otpRepository.saveAndFlush(otp);
+        return otp;
     }
 }

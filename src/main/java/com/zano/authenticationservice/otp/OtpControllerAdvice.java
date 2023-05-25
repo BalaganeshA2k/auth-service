@@ -1,7 +1,7 @@
 package com.zano.authenticationservice.otp;
 
-import static com.zano.authenticationservice.otp.TotpValidator.TotpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
-import static com.zano.authenticationservice.otp.TotpValidator.TotpValidationResult.OTP_EXPRIRED;
+import static com.zano.authenticationservice.otp.OtpValidator.OtpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
+import static com.zano.authenticationservice.otp.OtpValidator.OtpValidationResult.OTP_EXPRIRED;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
