@@ -14,7 +14,7 @@ import lombok.SneakyThrows;
 
 @Component
 @RequiredArgsConstructor
-public class OtpSender {
+public class EmailOtpSender {
     private final JavaMailSender javaMailSender;
     @Value("spring.mail.username")
     private String applicationEmail;
