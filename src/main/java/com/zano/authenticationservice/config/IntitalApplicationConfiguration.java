@@ -64,7 +64,8 @@ public class IntitalApplicationConfiguration {
 
     private UserDetail defaultAdminUser() {
         return UserDetail.builder()
-                .userEmail("DEFAULT_ADMIN")
+                .username("admin")
+                .userEmail("admin.zano@gmail.com")
                 .password(passwordEncoder.encode("admin"))
                 .authorities(Set.of(defaultAdminAuthority()))
                 .build();

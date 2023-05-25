@@ -30,8 +30,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_details")
 public class UserDetail {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private String username;
 
   @Column(unique = true, nullable = false)
   private String userEmail;
