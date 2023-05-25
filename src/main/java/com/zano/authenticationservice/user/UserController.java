@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
   private final UserDetailService userDetailService;
-  
-  @PostMapping("/user")
+
+  @PostMapping
   public UserSignInStatus userSignIn(@RequestBody UserSignInRequest userSignInRequest){
     return userDetailService
     .signInUser(userSignInRequest);
   }
+
 
 }

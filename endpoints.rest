@@ -2,8 +2,8 @@ POST http://localhost:8080/api/v1/user HTTP/1.1
 content-type: application/json
 
 {
-    "username": "balaganesh.a2k@gmail.com",
-    "password": "Wed, 21 Oct 2015 18:27:50 GMT"
+    "username": "balane.a2@gmail.com",
+    "password": "Wed, 2ct 2015 18:27:50 GMT"
 }
 ###
 
