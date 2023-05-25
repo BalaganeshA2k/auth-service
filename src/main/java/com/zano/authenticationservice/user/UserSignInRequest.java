@@ -1,10 +1,10 @@
 package com.zano.authenticationservice.user;
 
-import java.util.Set;
+import com.zano.authenticationservice.user.validation.UniqueUserEmail;
 
-import com.zano.authenticationservice.ApplicationRoles;
-import com.zano.authenticationservice.authority.Authority;
+import jakarta.validation.constraints.Email;
 
-
-public record UserSignInRequest (String username,String password){
+public record UserSignInRequest(
+        @Email(message = "Invalid Email format") @UniqueUserEmail String email,
+        String password) {
 }
