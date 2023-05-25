@@ -2,13 +2,19 @@ package com.zano.authenticationservice.config;
 
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Clock;
+import java.util.Random;
 import java.util.Set;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.zano.authenticationservice.ApplicationRoles;
 import com.zano.authenticationservice.authority.Authority;
@@ -23,6 +29,17 @@ import lombok.RequiredArgsConstructor;
 public class IntitalApplicationConfiguration {
     private final UserDetailRepository userDetailRepository;
     private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Bean
+    Random random() throws NoSuchAlgorithmException {
+        return SecureRandom.getInstanceStrong();
+    }
+
+    @Bean
+    Clock clock() {
+        return Clock.systemUTC();
+    }
 
     @Bean
     CommandLineRunner commandLineRunner() {
@@ -48,7 +65,7 @@ public class IntitalApplicationConfiguration {
     private UserDetail defaultAdminUser() {
         return UserDetail.builder()
                 .userEmail("DEFAULT_ADMIN")
-                .password("admin")
+                .password(passwordEncoder.encode("admin"))
                 .authorities(Set.of(defaultAdminAuthority()))
                 .build();
     }
