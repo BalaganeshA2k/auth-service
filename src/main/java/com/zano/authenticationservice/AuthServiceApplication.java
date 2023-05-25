@@ -3,11 +3,13 @@ package com.zano.authenticationservice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class AuthenticationServiceApplication {
+import lombok.RequiredArgsConstructor;
 
+@SpringBootApplication
+@RequiredArgsConstructor
+public class AuthServiceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(AuthenticationServiceApplication.class, args);
+		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
 }
