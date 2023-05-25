@@ -12,6 +12,6 @@ public class UserDetailService {
   public UserSignInStatus signInUser(UserSignInRequest userSignInRequest){
     var userDetail =userSignInRequest.toUserDetail();
     userDetailRepository.save(userDetail);
-    return UserSignInStatus.SIGNED_IN;
+    return UserSignInStatus.SIGN_IN_SUCCESSFULL;
   }
 }

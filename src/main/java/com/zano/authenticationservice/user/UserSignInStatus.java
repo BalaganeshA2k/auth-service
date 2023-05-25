@@ -1,5 +1,5 @@
 package com.zano.authenticationservice.user;
 
 public enum UserSignInStatus {
-  SIGNED_IN
+  SIGN_IN_SUCCESSFULL
 }
