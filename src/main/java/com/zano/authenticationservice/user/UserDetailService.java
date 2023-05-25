@@ -37,4 +37,8 @@ public class UserDetailService {
     return userDetailRepository.existsById(username);
   }
 
+  public boolean isEmailRegistered(String email) {
+    return userDetailRepository.existsByUserEmail(email);
+  }
+
 }

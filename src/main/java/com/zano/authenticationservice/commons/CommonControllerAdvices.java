@@ -12,8 +12,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class CommonControllerAdvices {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintValidationException(
+            ConstraintViolationException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("error", ex.getMessage());
+        return ResponseEntity.badRequest().body(errorMap);
+
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
@@ -29,4 +39,5 @@ public class CommonControllerAdvices {
         errorResponse.put("errors", errors);
         return errorResponse;
     }
+
 }
