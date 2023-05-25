@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sigin in confirmation email</title>
+
+    <style>
+      body{
+        background-color: #121212;
+        color: white;
+      }
+      article {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      section {
+        padding: 20px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80vw;
+        max-width: 500px;
+        border: 1px solid white;
+        border-radius: 10px;
+        box-shadow: 10px 10px 8px 10px #222;
+        margin-bottom: 30px;
+
+      }
+      button {
+        width: 60%;
+        height: 40px;
+        background-color: rgb(231, 20, 20);
+        border: none;
+        border: 1px solid black;
+        border-radius: 30px;
+
+      }
+      h1,
+      p {
+        text-align: center;
+      }
+      h1 {
+        font-size: 86px;
+      }
+      p {
+        font-size: 18px;
+      }
+      p.small {
+        font-size: small;
+      }
+      a{
+        font-size: 16px;
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <article>
+      <h1>ZANO</h1>
+      <section>
+        <p>Hi ${USER_EMAIL}</p>
+        <p>To verify your email, Please click the button below</p>
+        <button><a href="${VERIFICATION_URL}">verify</a></button>
+      </section>
+      <p class="small">If this mail was not regarding to you, Kindly ignore it</p>
+    </article>
+  </body>
+</html>
