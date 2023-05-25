@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.init;
+package com.zano.authenticationservice.config;
 
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
 
@@ -6,12 +6,16 @@ import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ApplicationEventMulticaster;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import com.zano.authenticationservice.ApplicationRoles;
 import com.zano.authenticationservice.authority.Authority;
 import com.zano.authenticationservice.authority.AuthorityRepository;
-import com.zano.authenticationservice.user.UserDetail;
-import com.zano.authenticationservice.user.UserDetailRepository;
+import com.zano.authenticationservice.user.detail.UserDetail;
+import com.zano.authenticationservice.user.detail.UserDetailRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -26,6 +30,13 @@ public class IntitalApplicationConfiguration {
             authorityRepository.save(defaultUserAuthority());
             userDetailRepository.save(defaultAdminUser());
         };
+    }
+
+    @Bean
+    ApplicationEventMulticaster applicationEventMulticaster() {
+        var multicaster = new SimpleApplicationEventMulticaster();
+        multicaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        return multicaster;
     }
 
     private Authority defaultUserAuthority() {
