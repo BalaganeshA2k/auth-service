@@ -19,31 +19,33 @@ import lombok.RequiredArgsConstructor;
 public class IntitalApplicationConfiguration {
     private final UserDetailRepository userDetailRepository;
     private final AuthorityRepository authorityRepository;
+
     @Bean
-    CommandLineRunner commandLineRunner(){
-        return cliInput ->{
+    CommandLineRunner commandLineRunner() {
+        return cliInput -> {
             authorityRepository.save(defaultUserAuthority());
             userDetailRepository.save(defaultAdminUser());
-        } ;
-    } 
-    private Authority defaultUserAuthority(){
+        };
+    }
+
+    private Authority defaultUserAuthority() {
         return Authority.builder()
-        .name(ApplicationRoles.ROLE_USER.name())
-        .build();
-    }  
+                .name(ApplicationRoles.ROLE_USER.name())
+                .build();
+    }
+
     private UserDetail defaultAdminUser() {
         return UserDetail.builder()
-        .username("DEFAULT_ADMIN")
-        .password("admin")
-        .authorities(Set.of(defaultAdminAuthority()))
-        .build();
+                .userEmail("DEFAULT_ADMIN")
+                .password("admin")
+                .authorities(Set.of(defaultAdminAuthority()))
+                .build();
     }
-    private Authority defaultAdminAuthority(){
+
+    private Authority defaultAdminAuthority() {
         return Authority.builder()
-            .name(ROLE_ADMIN.name())
-            .build();
+                .name(ROLE_ADMIN.name())
+                .build();
     }
-    
-   
-    
+
 }
