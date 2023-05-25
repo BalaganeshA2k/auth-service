@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.user;
+package com.zano.authenticationservice.user.detail;
 
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;

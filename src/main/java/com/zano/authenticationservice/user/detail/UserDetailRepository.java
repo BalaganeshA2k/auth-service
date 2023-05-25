@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.user;
+package com.zano.authenticationservice.user.detail;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
