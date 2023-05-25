@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zano.authenticationservice.user.dto.NewUser;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,9 +31,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveNewUser(@RequestBody NewUser user, @RequestHeader(AUTHORIZATION) String authorisationHeaderValue) {
         userDetailService.saveNewUser(user, authorisationHeaderValue);
-    }
-
-    public record NewUser(String username, String password) {
     }
 
 }

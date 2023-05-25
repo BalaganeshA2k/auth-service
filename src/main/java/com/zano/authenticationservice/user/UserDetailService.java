@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.zano.authenticationservice.authority.AuthorityService;
 import com.zano.authenticationservice.commons.exception.UserNameNotFoundExceptionSupplier;
 import com.zano.authenticationservice.jwt.JwtService;
-import com.zano.authenticationservice.user.UserController.NewUser;
+import com.zano.authenticationservice.user.dto.NewUser;
 
 import lombok.RequiredArgsConstructor;
 
