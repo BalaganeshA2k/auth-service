@@ -1,12 +1,12 @@
 package com.zano.authenticationservice.authority;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 import java.util.Set;
 
 import com.zano.authenticationservice.user.UserDetail;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +23,7 @@ public class Authority {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
-  @ManyToMany(fetch = FetchType.LAZY,mappedBy = "authorities")
+  @ManyToMany(fetch = LAZY,mappedBy = "authorities")
   private Set<UserDetail> userDetails;
   
 }
