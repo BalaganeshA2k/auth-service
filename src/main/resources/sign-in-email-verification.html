@@ -46,10 +46,10 @@
     <article>
       <h1>ZANO</h1>
       <section>
-        <p>Greetings from ZANO</p>
-        <p>This is a verfication for you email ${USER_EMAIL}:</p>
-        <p>Your Otp for your signIn is ${TOTP}.</p>
-        <p class="small">This will expire on ${TOTP_EXPIRY}</p>
+        <p>${TOTP}</p>
+        <p class="small">
+          This will expire in ${TOTP_EXPIRATION} ${EXPIRATION_UNIT} .
+        </p>
       </section>
       <p class="small">
         This is a system generated email from zano. If the email mentioned was

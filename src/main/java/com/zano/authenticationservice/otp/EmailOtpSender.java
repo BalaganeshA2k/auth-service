@@ -18,6 +18,8 @@ public class EmailOtpSender {
     private final JavaMailSender javaMailSender;
     @Value("spring.mail.username")
     private String applicationEmail;
+    @Value("${user.sign-in.otp.expirtation.seconds}")
+    private long totpExpiration;
 
     public void sendOtp(Totp totp) throws MessagingException {
         var mail = javaMailSender.createMimeMessage();
@@ -41,7 +43,8 @@ public class EmailOtpSender {
         return otpEmailTemplate()
                 .replace("${USER_EMAIL}", totp.getEmail())
                 .replace("${TOTP}", totp.getCode())
-                .replace("${TOTP_EXPIRY}", totp.getExpireAt().toString());
+                .replace("${TOTP_EXPIRATION}", String.valueOf(totpExpiration))
+                .replace("${EXPIRATION_UNIT}", "seconds");
 
     }
 }
