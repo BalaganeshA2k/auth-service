@@ -1,8 +1,8 @@
-package com.zano.authenticationservice.user.validation;
+package com.zano.authenticationservice.email.validation;
 
 import org.springframework.stereotype.Component;
 
-import com.zano.authenticationservice.user.detail.UserDetailRepository;
+import com.zano.authenticationservice.user.UserDetailRepository;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.user.detail.UserDetailRepository;
+import com.zano.authenticationservice.user.UserDetailRepository;
 
 import lombok.RequiredArgsConstructor;
 

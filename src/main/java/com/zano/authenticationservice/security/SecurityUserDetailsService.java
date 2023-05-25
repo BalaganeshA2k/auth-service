@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.zano.authenticationservice.commons.exception.UserNameNotFoundExceptionSupplier;
-import com.zano.authenticationservice.user.detail.UserDetail;
-import com.zano.authenticationservice.user.detail.UserDetailRepository;
+import com.zano.authenticationservice.user.UserDetail;
+import com.zano.authenticationservice.user.UserDetailRepository;
 
 import lombok.RequiredArgsConstructor;
 

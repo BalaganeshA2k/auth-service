@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.user.detail;
+package com.zano.authenticationservice.user;
 
 import java.util.Optional;
 

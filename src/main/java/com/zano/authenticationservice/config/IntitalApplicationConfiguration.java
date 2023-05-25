@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.zano.authenticationservice.ApplicationRoles;
 import com.zano.authenticationservice.authority.Authority;
 import com.zano.authenticationservice.authority.AuthorityRepository;
-import com.zano.authenticationservice.user.detail.UserDetail;
-import com.zano.authenticationservice.user.detail.UserDetailRepository;
+import com.zano.authenticationservice.user.UserDetail;
+import com.zano.authenticationservice.user.UserDetailRepository;
 
 import lombok.RequiredArgsConstructor;
 

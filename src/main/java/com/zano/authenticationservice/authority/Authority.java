@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.zano.authenticationservice.user.detail.UserDetail;
+import com.zano.authenticationservice.user.UserDetail;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
