@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.zano.authenticationservice.user.detail.UserDetail;
+import com.zano.authenticationservice.user.detail.UserDetailRepository;
+
 @DataJpaTest
 public class UserDetailRepositoryTest {
     @Autowired
