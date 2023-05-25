@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 public class UserSignInRequest {
   private String username;
   private String password;
-  public UserDetail toUserDetail(){
+
+  public UserDetail toUserDetail() {
     return UserDetail.builder()
-      .username(username)
-      .password(password)
-      .build();
+        .username(username)
+        .password(password)
+        .build();
   }
 }
