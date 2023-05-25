@@ -46,7 +46,12 @@
     <article>
       <h1>ZANO</h1>
       <section>
-        <p>${TOTP}</p>
+        <p style="font-size: 22px">Your one-time-password is:</p>
+        <p>
+          <strong style="font-size: 40px; color: rgb(20, 27, 47)"
+            >${TOTP}</strong
+          >
+        </p>
         <p class="small">
           This will expire in ${TOTP_EXPIRATION} ${EXPIRATION_UNIT} .
         </p>
