@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.user.UserAuthentication;
+import com.zano.authenticationservice.authentication.UserAuthentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,8 +28,7 @@ public class JwtGenerator {
   public UserAuthentication generateAuthenticationToken(String email) {
     var tokenDate = getIssuedAndExpiration();
     var token = generateToken(email, tokenDate, Map.of());
-    new UserAuthentication(token, tokenDate.expiration.toString(), tokenDate.issued().toString(), issuer);
-    return null;
+    return new UserAuthentication(token, tokenDate.expiration.toString(), tokenDate.issued().toString(), issuer);
   }
 
   private String generateToken(String subject, IssuedAndExpiration tokenDate, Map<String, Object> claims) {
