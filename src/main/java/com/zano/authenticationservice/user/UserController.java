@@ -35,7 +35,7 @@ public class UserController {
     @ResponseStatus(ACCEPTED)
     public void saveNewUser(
             @Valid @RequestBody NewUser user,
-            @Valid @UnRegisteredEmailInHeader @RequestHeader(AUTHORIZATION) String authorisationHeaderValue) {
+            @Valid @UnRegisteredEmailInHeader @RequestHeader("X-" + AUTHORIZATION) String authorisationHeaderValue) {
         userDetailService.saveNewUser(user, authorisationHeaderValue);
     }
 
