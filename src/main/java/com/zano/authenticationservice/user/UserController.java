@@ -1,6 +1,7 @@
 package com.zano.authenticationservice.user;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.CREATED;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,10 @@ public class UserController {
   private final UserDetailService userDetailService;
 
   @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(CREATED)
   public void userSignIn(
-      @RequestBody UserSignInRequest userSignInRequest) {
-      userDetailService.signInUser(userSignInRequest);
+      @RequestBody @Validated UserSignInRequest userSignInRequest) {
+    userDetailService.signInUser(userSignInRequest);
   }
 
 }
