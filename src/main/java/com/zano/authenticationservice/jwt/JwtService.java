@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtService {
     private final JwtGenerator jwtGenerator;
     private final JwtDetailsExtractor jwtDetailsExtractor;
+    private final JwtValidator jwtValidator;
 
     public UserAuthentication generateAuthenticationToken(String email) {
         return jwtGenerator.generateAuthenticationToken(email);
@@ -22,4 +23,7 @@ public class JwtService {
         return jwtDetailsExtractor.extractSubject(headerValue.substring(7));
     }
 
+    public boolean isTokenValid(String token) {
+        return jwtValidator.isTokenValid(token);
+    }
 }
