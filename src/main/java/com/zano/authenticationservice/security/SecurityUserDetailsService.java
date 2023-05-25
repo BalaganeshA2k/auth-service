@@ -26,7 +26,9 @@ public class SecurityUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails mapToUserDetails(UserDetail userDetail) {
-        return User.withUsername(userDetail.getUserEmail())
+
+        return User.builder()
+                .username(userDetail.getUserEmail())
                 .password(userDetail.getPassword())
                 .authorities(userDetail.getAuthorities())
                 .build();
