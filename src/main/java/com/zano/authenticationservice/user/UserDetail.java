@@ -3,7 +3,6 @@ package com.zano.authenticationservice.user;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.zano.authenticationservice.authority.Authority;
@@ -23,7 +22,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @Builder @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "user_details")
 public class UserDetail {
@@ -31,18 +33,14 @@ public class UserDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true,nullable = false)
-  private String username;
+  @Column(unique = true, nullable = false)
+  private String userEmail;
 
   @Column(nullable = false)
   private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY,cascade = {PERSIST,MERGE})
-  @JoinTable(
-    name = "user_authorities",
-    joinColumns = @JoinColumn(name = "user_detail_id"),
-    inverseJoinColumns = @JoinColumn(name = "authority_id")
-  )
-  private Set<Authority> authorities = new HashSet<>();
-  
+  @ManyToMany(fetch = FetchType.LAZY, cascade = { PERSIST, MERGE })
+  @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_detail_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
+  private Set<Authority> authorities;
+
 }
