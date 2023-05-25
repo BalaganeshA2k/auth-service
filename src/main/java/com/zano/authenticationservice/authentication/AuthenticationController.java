@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController {
     private final AuthenticationService otpService;
 
-    @GetMapping(value = "/api/v1/authentication/otp")
+    @GetMapping(value = "/api/v1/otp/authentication")
     public UserAuthentication postMethodName(
             @RequestHeader("X-Email-Id") @Email @NotBlank String emailId,
             @RequestHeader("X-Otp") String otp) {
