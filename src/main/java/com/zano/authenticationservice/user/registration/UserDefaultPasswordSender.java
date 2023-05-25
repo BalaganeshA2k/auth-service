@@ -18,7 +18,7 @@ public class UserDefaultPasswordSender {
 
     @EventListener
     @Async
-    public void sendDefaultPassword(UserEmailVerificationEvent userEmailVerificationEvent) {
+    public void sendDefaultPasswordToEmail(UserEmailVerificationEvent userEmailVerificationEvent) {
         var mail = new SimpleMailMessage();
         mail.setSubject("Zano Password");
         mail.setFrom(applicationEmail);
