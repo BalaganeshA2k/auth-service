@@ -32,14 +32,14 @@ public class TotpValidator {
                 .isBefore(now);
     }
 
-    public TotpValidationResult validate(TotpRequest otpRequest) {
-        var otp = totpRepository.findById(otpRequest.email())
+    public TotpValidationResult validate(String emailId, String otp) {
+        var totp = totpRepository.findById(emailId)
                 .orElseThrow(() -> new OtpNotGeneratedException());
-        if (!otp.getCode().equals(otpRequest.otp()))
+        if (!totp.getCode().equals(otp))
             return TotpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
-        if (isExpired(otp))
+        if (isExpired(totp))
             return TotpValidationResult.OTP_EXPRIRED;
-        totpRepository.deleteById(otpRequest.email());
+        totpRepository.deleteById(emailId);
         return TotpValidationResult.VALIDATION_SUCCESS;
     }
 

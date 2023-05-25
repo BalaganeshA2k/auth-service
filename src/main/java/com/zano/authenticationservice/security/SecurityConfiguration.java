@@ -25,14 +25,7 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/user/registration")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/user/authentication")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/user/otp")
-                        .permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return httpSecurity.build();
     }
