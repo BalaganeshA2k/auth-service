@@ -28,4 +28,8 @@ public class UserDetailService {
         .orElseThrow(userNameNotFoundExceptionSupplier);
   }
 
+  public Boolean isUserNameTaken(String username) {
+    return userDetailRepository.existsById(username);
+  }
+
 }
