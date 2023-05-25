@@ -1,14 +1,14 @@
 package com.zano.authenticationservice.jwt;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.user.registration.UserSignInRequest;
+import com.zano.authenticationservice.user.UserAuthentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,34 +18,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtGenerator {
 
-  @Value("${application.security.jwt.expiration}")
-  private long jwtExpiration;
+  @Value("${application.security.jwt.expiration.day}")
+  private byte jwtExpiration;
   @Value("${spring.application.name}")
   private String issuer;
-
+  private final Clock clock;
   private final JwtSigningKeySupplier signKeySupplier;
 
-  public String generateJwt(UserDetails userDetails) {
-    return generateJwt(new HashMap<>(), userDetails);
+  public UserAuthentication generateAuthenticationToken(String email) {
+    var tokenDate = getIssuedAndExpiration();
+    var token = generateToken(email, tokenDate, Map.of());
+    new UserAuthentication(token, tokenDate.expiration.toString(), tokenDate.issued().toString(), issuer);
+    return null;
   }
 
-  public String generateJwt(
-      Map<String, Object> extraClaims,
-      UserDetails userDetails) {
-    return buildToken(extraClaims, userDetails.getUsername());
-  }
-
-  private String buildToken(
-      Map<String, Object> extraClaims,
-      String subject) {
+  private String generateToken(String subject, IssuedAndExpiration tokenDate, Map<String, Object> claims) {
     return Jwts.builder()
-        .setClaims(extraClaims)
+        .setClaims(claims)
         .setSubject(subject)
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+        .setIssuedAt(tokenDate.issued())
+        .setExpiration(tokenDate.expiration())
         .setIssuer(issuer)
         .signWith(signKeySupplier.get(), SignatureAlgorithm.HS256)
         .compact();
+  }
+
+  private IssuedAndExpiration getIssuedAndExpiration() {
+    var now = clock.instant();
+    var expiration = now.plus(Duration.ofDays(jwtExpiration));
+    var currentDate = Date.from(now);
+    var expirationDate = Date.from(expiration);
+    return new IssuedAndExpiration(currentDate, expirationDate);
+
+  }
+
+  private record IssuedAndExpiration(Date issued, Date expiration) {
   }
 
 }
