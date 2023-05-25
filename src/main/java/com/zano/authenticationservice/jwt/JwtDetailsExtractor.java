@@ -18,7 +18,7 @@ public class JwtDetailsExtractor {
     return tokenWithBearer.substring(7);
   }
 
-  public String extractUsername(String token) {
+  public String extractSubject(String token) {
     return extractClaim(token, Claims::getSubject);
   }
 
