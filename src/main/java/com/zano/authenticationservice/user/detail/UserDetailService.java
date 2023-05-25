@@ -21,4 +21,8 @@ public class UserDetailService {
     userDetailRepository.save(user);
   }
 
+  public boolean isEmailRegistered(String email) {
+    return userDetailRepository.existsByUserEmail(email);
+  }
+
 }
