@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EncodedEmailPasswordGenerator {
+public class RandomEncodedPasswordGenerator {
     private final PasswordEncoder passwordEncoder;
 
-    public String generate(String email) {
-        var password = UUID.fromString(email).toString();
+    public String generate() {
+        var password = UUID.randomUUID().toString();
         return passwordEncoder.encode(password);
     }
 
