@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.zano.authenticationservice.authority.AuthorityService;
 import com.zano.authenticationservice.commons.exception.UserNameNotFoundExceptionSupplier;
+import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.user.UserController.NewUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,11 +15,14 @@ public class UserDetailService {
   private final UserDetailRepository userDetailRepository;
   private final AuthorityService authorityService;
   private final UserNameNotFoundExceptionSupplier userNameNotFoundExceptionSupplier;
+  private final JwtService jwtService;
 
-  public void saveNewUser(String email, String password) {
+  public void saveNewUser(NewUser newUser, String authorisationHeaderValue) {
+    var email = jwtService.extractSubjectFromBearerToken(authorisationHeaderValue);
     var user = UserDetail.builder()
+        .username(newUser.username())
         .userEmail(email)
-        .password(password)
+        .password(newUser.password())
         .authorities(authorityService.getDefaultUserAuthority())
         .build();
     userDetailRepository.save(user);

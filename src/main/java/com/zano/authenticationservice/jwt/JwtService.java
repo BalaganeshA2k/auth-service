@@ -10,9 +10,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtGenerator jwtGenerator;
+    private final JwtDetailsExtractor jwtDetailsExtractor;
 
     public UserAuthentication generateAuthenticationToken(String email) {
         return jwtGenerator.generateAuthenticationToken(email);
+    }
+
+    public String extractSubjectFromBearerToken(String headerValue) {
+        if (!headerValue.startsWith("Bearer "))
+            throw new AuthorisationHeaderHasNoBearer();
+        return jwtDetailsExtractor.extractSubject(headerValue.substring(7));
     }
 
 }

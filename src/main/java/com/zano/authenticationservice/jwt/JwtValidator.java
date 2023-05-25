@@ -19,7 +19,7 @@ public class JwtValidator {
   private long jwtExpiration;
 
   public boolean isTokenValid(String token) {
-    final String username = jwtDetailsExtractor.extractUsername(token);
+    final String username = jwtDetailsExtractor.extractSubject(token);
     return (userDetailRepository.existsByUserEmail(username)) && !isTokenExpired(token);
   }
 
