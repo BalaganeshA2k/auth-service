@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserDetailService {
-  private UserDetailRepository userDetailRepository;
-  private AuthorityService authorityService;
+  private final UserDetailRepository userDetailRepository;
+  private final AuthorityService authorityService;
 
   public void saveNewUser(String email, String password) {
     var user = UserDetail.builder()
