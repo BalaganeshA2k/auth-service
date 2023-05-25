@@ -12,7 +12,7 @@ public class UserDetailService {
   public UserSignInStatus signInUser(UserSignInRequest userSignInRequest) {
     var userDetailsExists = userDetailRepository.existsByUsername(userSignInRequest.getUsername());
     if (userDetailsExists)
-      return UserSignInStatus.FAILED_TO_SIGN_IN_EXISTING_USER;
+      return UserSignInStatus.USER_ALREADY_SIGNED_IN;
     var userDetail = userSignInRequest.toUserDetail();
     userDetailRepository.save(userDetail);
     return UserSignInStatus.SIGN_IN_SUCCESSFULL;
