@@ -15,7 +15,7 @@ public class JwtValidator {
   private final JwtDetailsExtractor jwtDetailsExtractor;
   private final UserDetailRepository userDetailRepository;
 
-  @Value("${application.security.jwt.expiration}")
+  @Value("${application.security.jwt.expiration.day}")
   private long jwtExpiration;
 
   public boolean isTokenValid(String token) {
