@@ -1,18 +1,10 @@
 package com.zano.authenticationservice.user;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
-public class UserSignInRequest {
-  private String username;
-  private String password;
+import com.zano.authenticationservice.ApplicationRoles;
+import com.zano.authenticationservice.authority.Authority;
 
-  public UserDetail toUserDetail() {
-    return UserDetail.builder()
-        .username(username)
-        .password(password)
-        .build();
-  }
+
+public record UserSignInRequest (String username,String password){
 }

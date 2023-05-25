@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDetailService {
   private final UserDetailRepository userDetailRepository;
-
-  public UserSignInStatus signInUser(UserSignInRequest userSignInRequest) {
-    var userDetailsExists = userDetailRepository.existsByUsername(userSignInRequest.getUsername());
+  private final UserSignInRequestToDefaultUserDetail userSignInRequestToDefaultUserDetail;
+  public void signInUser(UserSignInRequest userSignInRequest) {
+    boolean userDetailsExists = 
+      userDetailRepository.existsByUsername(userSignInRequest.username());
     if (userDetailsExists)
-      return UserSignInStatus.USER_ALREADY_SIGNED_IN;
-    var userDetail = userSignInRequest.toUserDetail();
+      throw new UserAlreadyExistsException();
+    var userDetail = userSignInRequestToDefaultUserDetail.apply(userSignInRequest);
     userDetailRepository.save(userDetail);
-    return UserSignInStatus.SIGN_IN_SUCCESSFULL;
   }
 }
