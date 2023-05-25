@@ -29,10 +29,6 @@ public class JwtGenerator {
     return generateJwt(new HashMap<>(), userDetails);
   }
 
-  public String generateSignInJwt(UserSignInRequest userSignInRequest) {
-    return buildToken(Map.of(), userSignInRequest.email());
-  }
-
   public String generateJwt(
       Map<String, Object> extraClaims,
       UserDetails userDetails) {
