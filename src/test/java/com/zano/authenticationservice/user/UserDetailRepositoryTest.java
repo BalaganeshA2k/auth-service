@@ -1,5 +1,6 @@
 package com.zano.authenticationservice.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,4 +34,23 @@ public class UserDetailRepositoryTest {
     public void existsByUsernameShouldReturnFalseIfUserDoesNotExists() {
         assertFalse(() -> userDetailRepository.existsByUserEmail("balaganesh.a2k@gmail.com"));
     }
+
+    @Test
+    public void findOneByUserEmailShouldReturnUserIfExists() {
+        var expected = UserDetail.builder()
+                .userEmail("balaganesh.a2k@gmail.com")
+                .password("pass")
+                .authorities(Set.of())
+                .build();
+        userDetailRepository.save(expected);
+        var actual = userDetailRepository.findOneByUserEmail("balaganesh.a2k@gmail.com").get();
+        assertEquals(expected, actual, "UserRepository.findOneByUserEmail is not returning saved user value");
+    }
+
+    @Test
+    public void findOneByUserEmailShouldNotReturnUserIfDooesNotExists() {
+        var isUserPresent = userDetailRepository.findOneByUserEmail("balaganesh.a2k@gmail.com").isPresent();
+        assertFalse(isUserPresent);
+    }
+
 }
