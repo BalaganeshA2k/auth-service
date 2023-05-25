@@ -5,16 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sigin in confirmation email</title>
-
     <style>
       body {
         background-color: #121212;
         color: white;
       }
-      article, section {
+      article,
+      section {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
       }
       section {
@@ -26,31 +25,21 @@
         box-shadow: 10px 10px 8px 10px #222;
         margin-bottom: 30px;
       }
-      button {
-        width: 60%;
-        height: 40px;
-        background-color: rgb(231, 20, 20);
-        border: none;
-        border: 1px solid black;
-        border-radius: 30px;
-      }
       h1,
       p {
         text-align: center;
       }
       h1 {
+        margin: 20px;
         font-size: 86px;
       }
       p {
         font-size: 18px;
       }
       p.small {
+        width: 80vw;
+        max-width: 500px;
         font-size: small;
-      }
-      a {
-        font-size: 16px;
-        color: white;
-        text-decoration: none;
       }
     </style>
   </head>
@@ -59,10 +48,8 @@
       <h1>ZANO</h1>
       <section>
         <p>Greetings from ZANO</p>
-        <br />
         <p>This is a verfication for you email ${USER_EMAIL}:</p>
         <p>Your Otp for your signIn is ${TOTP}.</p>
-        <br />
         <p>This will expire on ${TOTP_EXPIRY}</p>
       </section>
       <p class="small">
