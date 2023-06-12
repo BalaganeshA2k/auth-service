@@ -8,7 +8,7 @@ public class UserNameNotFoundExceptionSupplier implements ExceptionSupplier<User
 
     @Override
     public UsernameNotFoundException get() {
-        throw new UsernameNotFoundException("User Not Registered");
+        return new UsernameNotFoundException("User Not Registered");
     }
 
 }
