@@ -6,12 +6,15 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.zano.authenticationservice.user.dto.UserAuthentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,11 +27,20 @@ public class JwtGenerator {
   private String issuer;
   private final Clock clock;
   private final JwtSigningKeySupplier signKeySupplier;
+  private final ApplicationEventPublisher applicationEventPublisher;
+
+  public UserAuthentication generateUserAuthentication(String email, IssuedAndExpiration tokenDate) {
+    var token = generateToken(email, tokenDate, Map.of());
+    Date expiration = tokenDate.expiration();
+    Date issued = tokenDate.issued();
+    var userAuthentication = new UserAuthentication(token, expiration.toString(),
+        issued.toString(), issuer);
+    applicationEventPublisher.publishEvent(new UserAuthenticationEvent(email, issued, expiration));
+    return userAuthentication;
+  }
 
   public UserAuthentication generateAuthenticationToken(String email) {
-    var tokenDate = getIssuedAndExpiration();
-    var token = generateToken(email, tokenDate, Map.of());
-    return new UserAuthentication(token, tokenDate.expiration.toString(), tokenDate.issued().toString(), issuer);
+    return generateUserAuthentication(email, getDefaultIssuedAndExpiration());
   }
 
   private String generateToken(String subject, IssuedAndExpiration tokenDate, Map<String, Object> claims) {
@@ -42,7 +54,7 @@ public class JwtGenerator {
         .compact();
   }
 
-  private IssuedAndExpiration getIssuedAndExpiration() {
+  private IssuedAndExpiration getDefaultIssuedAndExpiration() {
     var now = clock.instant();
     var expiration = now.plus(Duration.ofDays(jwtExpiration));
     var currentDate = Date.from(now);
@@ -52,6 +64,10 @@ public class JwtGenerator {
   }
 
   private record IssuedAndExpiration(Date issued, Date expiration) {
+  }
+
+  @Entity
+  public record UserAuthenticationEvent(@Id String email, Date issued, Date expiration) {
   }
 
 }
