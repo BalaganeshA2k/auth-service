@@ -11,11 +11,13 @@ import com.zano.authenticationservice.user.validation.annotation.StrongPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Component
 @RequiredArgsConstructor
+@Setter
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
-    private final List<Rule> passwordRules;
+    private List<Rule> passwordRules;
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
