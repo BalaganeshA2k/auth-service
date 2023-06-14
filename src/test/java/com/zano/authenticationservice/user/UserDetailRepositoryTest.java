@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,12 +17,19 @@ public class UserDetailRepositoryTest {
     private UserDetailRepository userDetailRepository;
 
     @Test
+    void assertSetUp() {
+        Assertions.assertThat(userDetailRepository).isNotNull();
+    }
+
+    UserDetail userDetail = UserDetail.builder()
+            .username("bala")
+            .userEmail("balaganesh.a2k@gmail.com")
+            .password("pass")
+            .authorities(Set.of())
+            .build();
+
+    @Test
     public void existsByUsernameShouldReturnTrueIfUserExists() {
-        UserDetail userDetail = UserDetail.builder()
-                .userEmail("balaganesh.a2k@gmail.com")
-                .password("pass")
-                .authorities(Set.of())
-                .build();
         userDetailRepository.save(userDetail);
 
         assertTrue(() -> userDetailRepository.existsByUserEmail("balaganesh.a2k@gmail.com"));
@@ -34,14 +42,9 @@ public class UserDetailRepositoryTest {
 
     @Test
     public void findOneByUserEmailShouldReturnUserIfExists() {
-        var expected = UserDetail.builder()
-                .userEmail("balaganesh.a2k@gmail.com")
-                .password("pass")
-                .authorities(Set.of())
-                .build();
-        userDetailRepository.save(expected);
+        userDetailRepository.save(userDetail);
         var actual = userDetailRepository.findOneByUserEmail("balaganesh.a2k@gmail.com").get();
-        assertEquals(expected, actual, "UserRepository.findOneByUserEmail is not returning saved user value");
+        assertEquals(userDetail, actual, "UserRepository.findOneByUserEmail is not returning saved user value");
     }
 
     @Test
