@@ -15,6 +15,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.zano.authenticationservice.security.filters.SignedInUserAuthenticationFilter;
+
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
     private final SecurityUserDetailsService applicationUserDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtFilter jwtFilter;
+    private final SignedInUserAuthenticationFilter jwtFilter;
     private AuthenticationEntryPoint authenticationEntryPoint = (request,
             response, ex) -> {
         response.sendError(

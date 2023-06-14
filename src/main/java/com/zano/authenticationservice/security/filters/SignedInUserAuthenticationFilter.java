@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.security;
+package com.zano.authenticationservice.security.filters;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.zano.authenticationservice.jwt.JwtDetailsExtractor;
 import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.security.SecurityUserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class SignedInUserAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final SecurityUserDetailsService userDetailsService;
     private final JwtDetailsExtractor jwtDetailsExtractor;
