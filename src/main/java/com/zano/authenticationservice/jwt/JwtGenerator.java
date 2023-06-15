@@ -13,8 +13,6 @@ import com.zano.authenticationservice.user.dto.UserAuthentication;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -64,10 +62,6 @@ public class JwtGenerator {
   }
 
   private record IssuedAndExpiration(Date issued, Date expiration) {
-  }
-
-  @Entity
-  public record UserAuthenticationEvent(@Id String email, Date issued, Date expiration) {
   }
 
 }
