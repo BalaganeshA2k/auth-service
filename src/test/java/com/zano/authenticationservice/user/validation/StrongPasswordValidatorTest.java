@@ -22,29 +22,29 @@ import jakarta.validation.ConstraintValidatorContext;
 
 @ExtendWith(MockitoExtension.class)
 public class StrongPasswordValidatorTest {
-    @Mock
-    private Rule lengthRule;
-    @Mock
-    private Rule characterRule;
-    @Spy
-    private List<Rule> validationRules;
-    @InjectMocks
-    private StrongPasswordValidator strongPasswordValidator;
+        @Mock
+        private Rule lengthRule;
+        @Mock
+        private Rule characterRule;
+        @Spy
+        private List<Rule> validationRules;
+        @InjectMocks
+        private StrongPasswordValidator strongPasswordValidator;
 
-    @Mock
-    private ConstraintValidatorContext constraintValidatorContext;
+        @Mock
+        private ConstraintValidatorContext constraintValidatorContext;
 
-    @BeforeEach
-    void setUp() {
-        validationRules = new ArrayList<>();
-        validationRules.add(characterRule);
-        validationRules.add(lengthRule);
-        strongPasswordValidator.setPasswordRules(validationRules);
-    }
+        @BeforeEach
+        void setUp() {
+                validationRules = new ArrayList<>();
+                validationRules.add(characterRule);
+                validationRules.add(lengthRule);
+                strongPasswordValidator.setPasswordRules(validationRules);
+        }
 
-    private String password = "password";
+        private String password = "password";
 
-    RuleResult trueResult = new RuleResult(true);
+        RuleResult trueResult = new RuleResult(true);
 
     @Test
     void isValidShouldReturnTrueWhenAllRulesPass() {
@@ -56,7 +56,7 @@ public class StrongPasswordValidatorTest {
                 .isTrue();
     }
 
-    RuleResult falseResult = new RuleResult(false);
+        RuleResult falseResult = new RuleResult(false);
 
     @Test
     void isValidShouldReturnFalseIfAnyRulesFail() {
