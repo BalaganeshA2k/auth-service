@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignedInUserAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final SecurityUserDetailsService userDetailsService;
+    private final SecurityUserDetailsService securityUserDetailsService;
     private final JwtDetailsExtractor jwtDetailsExtractor;
 
     @Override
@@ -45,12 +45,9 @@ public class SignedInUserAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        var userDetails = userDetailsService.loadUserByUsername(email);
-        var authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(), null, userDetails.getAuthorities());
-        var detailSource = new WebAuthenticationDetailsSource().buildDetails(request);
-        authentication.setDetails(detailSource);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        var userDetails = securityUserDetailsService.loadUserByUsername(email);
+        securityUserDetailsService.setAuthenticationToContext(request, userDetails);
+
         filterChain.doFilter(request, response);
     }
 
