@@ -1,6 +1,8 @@
 package com.zano.authenticationservice.config;
 
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
+import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
+import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -16,7 +18,6 @@ import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.zano.authenticationservice.ApplicationRoles;
 import com.zano.authenticationservice.authority.Authority;
 import com.zano.authenticationservice.authority.AuthorityRepository;
 import com.zano.authenticationservice.user.UserDetail;
@@ -45,6 +46,7 @@ public class IntitalApplicationConfiguration {
     CommandLineRunner commandLineRunner() {
         return cliInput -> {
             authorityRepository.save(defaultUserAuthority());
+            authorityRepository.save(newUserAuthority());
             userDetailRepository.save(defaultAdminUser());
         };
     }
@@ -56,9 +58,15 @@ public class IntitalApplicationConfiguration {
         return multicaster;
     }
 
+    private Authority newUserAuthority() {
+        return Authority.builder()
+                .name(ROLE_NEW_USER.name())
+                .build();
+    }
+
     private Authority defaultUserAuthority() {
         return Authority.builder()
-                .name(ApplicationRoles.ROLE_USER.name())
+                .name(ROLE_USER.name())
                 .build();
     }
 
