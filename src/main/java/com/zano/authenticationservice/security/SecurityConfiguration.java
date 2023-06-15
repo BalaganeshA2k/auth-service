@@ -1,8 +1,11 @@
 package com.zano.authenticationservice.security;
 
+import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.zano.authenticationservice.security.filters.SignedInUserAuthenticationFilter;
+import com.zano.authenticationservice.security.filters.UnSignedUserAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +30,12 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
     private final SecurityUserDetailsService applicationUserDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final SignedInUserAuthenticationFilter jwtFilter;
+    private final UnSignedUserAuthenticationFilter unSignedUserAuthenticationFilter;
+    private final SignedInUserAuthenticationFilter signedUserAuthenticationFilter;
     private AuthenticationEntryPoint authenticationEntryPoint = (request,
-            response, ex) -> {
-        response.sendError(
-                HttpServletResponse.SC_UNAUTHORIZED,
-                ex.getMessage());
-    };
+            response, ex) -> response.sendError(
+                    HttpServletResponse.SC_UNAUTHORIZED,
+                    ex.getMessage());
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,12 +43,15 @@ public class SecurityConfiguration {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(this.authenticationProvider())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(HttpMethod.POST, "/api/v1/otp/email-id").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/otp/authentication").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+                        auth -> auth.requestMatchers(POST, "/api/v1/otp/email-id").permitAll()
+                                .requestMatchers(GET, "/api/v1/otp/authentication").permitAll()
+                                .requestMatchers(GET, "/api/v1/user/availability/*")
+                                .hasAnyAuthority(ROLE_NEW_USER.name())
+                                .requestMatchers(POST, "/api/v1/user").hasAnyAuthority(ROLE_NEW_USER.name())
                                 .anyRequest().authenticated())
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(authenticationEntryPoint))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(unSignedUserAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(signedUserAuthenticationFilter, UnSignedUserAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
