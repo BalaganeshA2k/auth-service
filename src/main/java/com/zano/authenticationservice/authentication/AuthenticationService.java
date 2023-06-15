@@ -5,11 +5,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.zano.authenticationservice.jwt.JwtService;
-import com.zano.authenticationservice.jwt.JwtGenerator.UserAuthenticationEvent;
+import com.zano.authenticationservice.jwt.UserAuthenticationEvent;
 import com.zano.authenticationservice.otp.OtpService;
 import com.zano.authenticationservice.otp.exception.EmailAndOtpDoesNotMatchException;
 import com.zano.authenticationservice.otp.exception.OtpExpiredException;
 import com.zano.authenticationservice.user.dto.UserAuthentication;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,11 +31,7 @@ public class AuthenticationService {
 
     @EventListener
     @Async
-    public void userAuthenticationGeneratedEvent(UserAuthenticationEvent userAuthenticationGeneratedEvent) {
-        save(userAuthenticationGeneratedEvent);
-    }
-
-    public void save(UserAuthenticationEvent userAuthenticationEvent) {
+    public void userAuthenticationGeneratedEvent(UserAuthenticationEvent userAuthenticationEvent) {
         userAuthenticationRepository.save(userAuthenticationEvent);
     }
 
