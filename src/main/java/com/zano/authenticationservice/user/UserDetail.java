@@ -36,7 +36,7 @@ public class UserDetail {
   @Column(nullable = false)
   private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = { PERSIST, MERGE })
+  @ManyToMany(fetch = FetchType.EAGER, cascade = { PERSIST, MERGE })
   @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_detail_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
   private Set<Authority> authorities;
 
