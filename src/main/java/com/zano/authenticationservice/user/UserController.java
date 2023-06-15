@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserDetailService userDetailService;
 
-    @GetMapping(value = "/api/v1/users/{username}/taken")
+    @GetMapping(value = "/api/v1/user/availability/{username}")
     public ResponseEntity<Boolean> isUserNameTaken(@PathVariable String username) {
         var existByUserName = userDetailService.isUserNameTaken(username);
         return ResponseEntity.ok().body(existByUserName);
@@ -35,7 +35,7 @@ public class UserController {
     @ResponseStatus(ACCEPTED)
     public void saveNewUser(
             @Valid @RequestBody NewUser user,
-            @Valid @UnRegisteredEmailInHeader @RequestHeader("X-" + AUTHORIZATION) String authorisationHeaderValue) {
+            @Valid @UnRegisteredEmailInHeader @RequestHeader(AUTHORIZATION) String authorisationHeaderValue) {
         userDetailService.saveNewUser(user, authorisationHeaderValue);
     }
 
