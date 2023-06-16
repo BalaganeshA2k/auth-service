@@ -1,8 +1,13 @@
-# Description
+# Project Description
 
 Auth Service is a microservice used for signing up users with email validation and can also get JWT authentication tokens
 
+To be more precise this project can be called as user authentication and authorisation service
+
 Auth service could be deployed to work with api gateways and other microservices of enterprise backends to authorise and authenticate users and other services
+
+> **Disclaimer**
+> This project has been made as a prototype/mvp of much more distributed version of the same project. Still this project is usable at some scale. Kindly do few tests before using. I'm doing this project in my spare time.So, all apis are not complete yet. I'll be rolling out apis and test as much as possible.
 
 # Features
 
