@@ -16,7 +16,7 @@ public class UnRegisteredUserNameValidator implements ConstraintValidator<UnRegi
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
-        return !userDetailService.isUserNameTaken(username);
+        return !userDetailService.getAvailabilityOfUserName(username);
     }
 
 }

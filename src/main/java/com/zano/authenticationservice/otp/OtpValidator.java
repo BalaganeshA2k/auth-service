@@ -34,7 +34,7 @@ public class OtpValidator {
 
     public OtpValidationResult validate(String emailId, String otp) {
         var repoOtp = otpRepository.findById(emailId)
-                .orElseThrow(() -> new OtpNotGeneratedException());
+                .orElseThrow(OtpNotGeneratedException::new);
         if (!repoOtp.getCode().equals(otp))
             return OtpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
         if (isExpired(repoOtp))

@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.otp;
+package com.zano.authenticationservice.user.authentication;
 
 import static com.zano.authenticationservice.otp.OtpValidator.OtpValidationResult.EMAIL_AND_OTP_DOES_NOT_MATCH;
 import static com.zano.authenticationservice.otp.OtpValidator.OtpValidationResult.OTP_EXPRIRED;
@@ -14,7 +14,7 @@ import com.zano.authenticationservice.otp.exception.OtpExpiredException;
 import com.zano.authenticationservice.otp.exception.OtpNotGeneratedException;
 
 @RestControllerAdvice
-public class OtpControllerAdvice {
+public class UserAuthenticationControllerAdvice {
     @ExceptionHandler(EmailAndOtpDoesNotMatchException.class)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     ApplicationErrorResponse emailAndOtpDoesNotMatchExceptionHandler(EmailAndOtpDoesNotMatchException exception) {

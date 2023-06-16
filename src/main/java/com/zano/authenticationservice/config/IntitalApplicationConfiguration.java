@@ -18,10 +18,10 @@ import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.zano.authenticationservice.authority.Authority;
-import com.zano.authenticationservice.authority.AuthorityRepository;
 import com.zano.authenticationservice.user.UserDetail;
 import com.zano.authenticationservice.user.UserDetailRepository;
+import com.zano.authenticationservice.user.authority.UserAuthority;
+import com.zano.authenticationservice.user.authority.UserAuthorityRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class IntitalApplicationConfiguration {
     private final UserDetailRepository userDetailRepository;
-    private final AuthorityRepository authorityRepository;
+    private final UserAuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -58,15 +58,15 @@ public class IntitalApplicationConfiguration {
         return multicaster;
     }
 
-    private Authority newUserAuthority() {
-        return Authority.builder()
-                .name(ROLE_NEW_USER.name())
+    private UserAuthority newUserAuthority() {
+        return UserAuthority.builder()
+                .authority(ROLE_NEW_USER.name())
                 .build();
     }
 
-    private Authority defaultUserAuthority() {
-        return Authority.builder()
-                .name(ROLE_USER.name())
+    private UserAuthority defaultUserAuthority() {
+        return UserAuthority.builder()
+                .authority(ROLE_USER.name())
                 .build();
     }
 
@@ -79,9 +79,9 @@ public class IntitalApplicationConfiguration {
                 .build();
     }
 
-    private Authority defaultAdminAuthority() {
-        return Authority.builder()
-                .name(ROLE_ADMIN.name())
+    private UserAuthority defaultAdminAuthority() {
+        return UserAuthority.builder()
+                .authority(ROLE_ADMIN.name())
                 .build();
     }
 

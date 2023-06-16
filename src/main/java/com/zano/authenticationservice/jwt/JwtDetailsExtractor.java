@@ -3,6 +3,10 @@ package com.zano.authenticationservice.jwt;
 import java.util.Date;
 import java.util.function.Function;
 import org.springframework.stereotype.Service;
+
+import com.zano.authenticationservice.jwt.exception.AuthorisationHeaderHasNoBearerException;
+import com.zano.authenticationservice.jwt.exception.InvalidAuthorisationTokenException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +18,14 @@ public class JwtDetailsExtractor {
 
   public String extractTokenFromAuthorisationHeader(String tokenWithBearer) {
     if (!tokenWithBearer.startsWith("Bearer "))
-      throw new InvalidAuthorisationToken();
+      throw new InvalidAuthorisationTokenException();
     return tokenWithBearer.substring(7);
+  }
+
+  public String extractSubjectFromBearerToken(String headerValue) {
+    if (!headerValue.startsWith("Bearer "))
+      throw new AuthorisationHeaderHasNoBearerException();
+    return extractSubject(headerValue.substring(7));
   }
 
   public String extractSubject(String token) {

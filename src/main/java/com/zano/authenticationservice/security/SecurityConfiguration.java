@@ -1,6 +1,7 @@
 package com.zano.authenticationservice.security;
 
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
+import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -19,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.zano.authenticationservice.security.filters.SignedInUserAuthenticationFilter;
-import com.zano.authenticationservice.security.filters.UnSignedUserAuthenticationFilter;
+import com.zano.authenticationservice.security.filters.UnSignedInUserAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
     private final SecurityUserDetailsService applicationUserDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final UnSignedUserAuthenticationFilter unSignedUserAuthenticationFilter;
+    private final UnSignedInUserAuthenticationFilter unSignedUserAuthenticationFilter;
     private final SignedInUserAuthenticationFilter signedUserAuthenticationFilter;
     private AuthenticationEntryPoint authenticationEntryPoint = (request,
             response, ex) -> response.sendError(
@@ -39,19 +40,25 @@ public class SecurityConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(csrf -> csrf.disable())
+        httpSecurity
+                .csrf(csrf -> csrf.disable())
+
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(this.authenticationProvider())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(POST, "/api/v1/otp/email-id").permitAll()
-                                .requestMatchers(GET, "/api/v1/otp/authentication").permitAll()
+                        auth -> auth
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers(POST, "/api/v1/user/email-id/registration").permitAll()
+                                .requestMatchers(GET, "/api/v1/user/otp/authentication").permitAll()
                                 .requestMatchers(GET, "/api/v1/user/availability/*")
                                 .hasAnyAuthority(ROLE_NEW_USER.name())
                                 .requestMatchers(POST, "/api/v1/user").hasAnyAuthority(ROLE_NEW_USER.name())
+                                .requestMatchers(GET, "/api/v1/user/token/authentication")
+                                .hasAnyAuthority(ROLE_USER.name())
                                 .anyRequest().authenticated())
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(unSignedUserAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(signedUserAuthenticationFilter, UnSignedUserAuthenticationFilter.class);
+                .addFilterBefore(signedUserAuthenticationFilter, UnSignedInUserAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

@@ -2,7 +2,7 @@ package com.zano.authenticationservice.user.validation;
 
 import org.springframework.stereotype.Component;
 
-import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.jwt.JwtDetailsExtractor;
 import com.zano.authenticationservice.user.UserDetailService;
 import com.zano.authenticationservice.user.validation.annotation.UnRegisteredEmailInHeader;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UnRegisteredEmailInHeaderValidator implements ConstraintValidator<UnRegisteredEmailInHeader, String> {
     private final UserDetailService userDetailService;
-    private final JwtService jwtService;
+    private final JwtDetailsExtractor jwtService;
 
     @Override
     public boolean isValid(String headerValue, ConstraintValidatorContext context) {

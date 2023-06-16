@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.otp;
+package com.zano.authenticationservice.commons;
 
 import java.util.Random;
 

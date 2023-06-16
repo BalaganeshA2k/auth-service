@@ -5,6 +5,8 @@ import java.time.Clock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.zano.authenticationservice.commons.RandomCodeGenerator;
+
 import lombok.RequiredArgsConstructor;
 
 @Component

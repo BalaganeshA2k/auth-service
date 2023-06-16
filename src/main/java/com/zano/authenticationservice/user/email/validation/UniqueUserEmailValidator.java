@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.email.validation;
+package com.zano.authenticationservice.user.email.validation;
 
 import org.springframework.stereotype.Component;
 

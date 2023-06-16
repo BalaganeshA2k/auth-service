@@ -20,9 +20,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.zano.authenticationservice.authority.AuthorityService;
 import com.zano.authenticationservice.commons.exception.UserNameNotFoundExceptionSupplier;
-import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.jwt.JwtDetailsExtractor;
+import com.zano.authenticationservice.user.authority.UserAuthorityService;
 import com.zano.authenticationservice.user.dto.NewUser;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,11 +30,11 @@ public class UserDetailServiceTest {
     @Mock
     private UserDetailRepository userDetailRepository;
     @Mock
-    private AuthorityService authorityService;
+    private UserAuthorityService authorityService;
     @Mock
     private UserNameNotFoundExceptionSupplier userNameNotFoundExceptionSupplier;
     @Mock
-    private JwtService jwtService;
+    private JwtDetailsExtractor jwtDetailsExtractor;
     @Mock
     private PasswordEncoder passwordEncoder;
 
@@ -47,7 +47,7 @@ public class UserDetailServiceTest {
 
     @Test
     void getUserDetailByEmailShouldReturnUserDetailForExistingEmail() {
-        when(userDetailRepository.findOneByUserEmail( mockEmail))
+        when(userDetailRepository.findByUserEmail( mockEmail))
         .thenReturn(Optional.of(userDetail));
         assertThat(userDetailService.getUserDetailByEmail( mockEmail))
         .isNotNull()
@@ -56,7 +56,7 @@ public class UserDetailServiceTest {
 
     @Test
     void getUserDetailByEmailShouldThrowUserNameNotFoundExpectionWhenEmailNotExist() {
-        when(userDetailRepository.findOneByUserEmail( mockEmail))
+        when(userDetailRepository.findByUserEmail( mockEmail))
                 .thenReturn(Optional.empty());
         when(userNameNotFoundExceptionSupplier.get())
         .thenReturn( new UsernameNotFoundException("User Not Registered"));
@@ -81,7 +81,7 @@ public class UserDetailServiceTest {
 
     @Test
     void saveNewUserShouldSaveUserDetailWithEncodedPasswordForValidJwt() {
-        when(jwtService.extractSubjectFromBearerToken(mockAuthHeader))
+        when(jwtDetailsExtractor.extractSubjectFromBearerToken(mockAuthHeader))
         .thenReturn(mockEmail);
         when(passwordEncoder.encode(mockNewUser.password()))
         .thenReturn(mockEncodedPassword);
@@ -94,7 +94,7 @@ public class UserDetailServiceTest {
 
     @Test
     void saveNewUserShouldThrowExceptionForInValidJwt() {
-        when(jwtService.extractSubjectFromBearerToken(mockAuthHeader))
+        when(jwtDetailsExtractor.extractSubjectFromBearerToken(mockAuthHeader))
         .thenThrow(RuntimeException.class);
         Assertions.assertThatThrownBy(()->{
             userDetailService.saveNewUser(mockNewUser, mockAuthHeader);
@@ -105,7 +105,7 @@ public class UserDetailServiceTest {
     void isUserNameTakenShouldReturnTrueIfUserNameIsTaken(){
         when(userDetailRepository.existsById(any()))
             .thenReturn(true);
-        assertThat(userDetailService.isUserNameTaken(mockUsername))
+        assertThat(userDetailService.getAvailabilityOfUserName(mockUsername))
         .isTrue();
     }
 
@@ -113,7 +113,7 @@ public class UserDetailServiceTest {
     void isUserNameTakenShouldReturnFalseIfUserNameIsNotTaken(){
         when(userDetailRepository.existsById(any()))
             .thenReturn(false);
-        assertThat(userDetailService.isUserNameTaken(mockUsername))
+        assertThat(userDetailService.getAvailabilityOfUserName(mockUsername))
         .isFalse();
     }
 

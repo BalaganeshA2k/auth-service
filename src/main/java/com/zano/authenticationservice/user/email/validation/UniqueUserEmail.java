@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.email.validation;
+package com.zano.authenticationservice.user.email.validation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

@@ -2,7 +2,6 @@ package com.zano.authenticationservice.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,23 +23,14 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userDetailRepository.findOneByUserEmail(email)
-                .map(this::mapToUserDetails)
+        return userDetailRepository.findByUserEmail(email)
+                .map(UserDetail::toUserDetails)
                 .orElseThrow(usernameNotFoundExceptionSupplier);
-    }
-
-    private UserDetails mapToUserDetails(UserDetail userDetail) {
-
-        return User.builder()
-                .username(userDetail.getUserEmail())
-                .password(userDetail.getPassword())
-                .authorities(userDetail.getAuthorities())
-                .build();
     }
 
     public void setAuthenticationToContext(HttpServletRequest request, UserDetails userDetails) {
         var authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(), null, userDetails.getAuthorities());
+                userDetails, null, userDetails.getAuthorities());
         var detailSource = new WebAuthenticationDetailsSource().buildDetails(request);
         authentication.setDetails(detailSource);
         SecurityContextHolder.getContext().setAuthentication(authentication);

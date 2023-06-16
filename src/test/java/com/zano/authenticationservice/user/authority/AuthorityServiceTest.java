@@ -1,9 +1,9 @@
-package com.zano.authenticationservice.authority;
+package com.zano.authenticationservice.user.authority;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.Set;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,30 +15,29 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class AuthorityServiceTest {
     @Mock
-    private AuthorityRepository authorityRepository;
+    private UserAuthorityRepository authorityRepository;
     @InjectMocks
-    private AuthorityService authorityService;
+    private UserAuthorityService authorityService;
     private String mockAuthorityName = "user";
-    private Authority mockAuthority = Authority.builder()
-            .name(mockAuthorityName)
-            .id(1L)
+    private UserAuthority mockAuthority = UserAuthority.builder()
+            .authority(mockAuthorityName)
             .build();
-    private AuthorityRequest mockAuthorityRequest = new AuthorityRequest(mockAuthorityName);
-    private CreatedAuthority mockCreatedAuthority = new CreatedAuthority(1L, mockAuthorityName);
+    private UserAuthorityRequest mockAuthorityRequest = new UserAuthorityRequest(mockAuthorityName);
+    private CreatedUserAuthority mockCreatedAuthority = new CreatedUserAuthority(mockAuthorityName);
 
     @Test
     void createNewAuthorityShouldReturnCreatedAuthority() {
-        when(authorityRepository.save(any(Authority.class)))
+        when(authorityRepository.save(any(UserAuthority.class)))
             .thenReturn(mockAuthority);
-        Assertions.assertThat(authorityService.createNewAuthority(mockAuthorityRequest))
+        Assertions.assertThat(authorityService.createNewUserAuthority(mockAuthorityRequest))
             .isNotNull()
             .isEqualTo(mockCreatedAuthority);
     }
 
     @Test
     void getDefaultUserAuthorityShouldReturnDefaultAuthority() {
-        when(authorityRepository.findByName(any(String.class)))
-        .thenReturn(Set.of(mockAuthority));
+        when(authorityRepository.findById(any(String.class)))
+        .thenReturn(Optional.of(mockAuthority));
         Assertions.assertThat(authorityService.getDefaultUserAuthority())
             .isNotEmpty()
             .containsExactly(mockAuthority);

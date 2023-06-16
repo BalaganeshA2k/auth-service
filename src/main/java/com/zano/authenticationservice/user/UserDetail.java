@@ -1,11 +1,13 @@
 package com.zano.authenticationservice.user;
 
 import static jakarta.persistence.CascadeType.MERGE;
-import static jakarta.persistence.CascadeType.PERSIST;
 
 import java.util.Set;
 
-import com.zano.authenticationservice.authority.Authority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.zano.authenticationservice.user.authority.UserAuthority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,12 +34,20 @@ public class UserDetail {
 
   @Column(unique = true, nullable = false)
   private String userEmail;
-
   @Column(nullable = false)
+
   private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = { PERSIST, MERGE })
-  @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_detail_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
-  private Set<Authority> authorities;
+  @ManyToMany(fetch = FetchType.EAGER, cascade = { MERGE })
+  @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "authority"))
+  private Set<UserAuthority> authorities;
+
+  public UserDetails toUserDetails() {
+    return User.builder()
+        .username(getUsername())
+        .password(getPassword())
+        .authorities(getAuthorities())
+        .build();
+  }
 
 }

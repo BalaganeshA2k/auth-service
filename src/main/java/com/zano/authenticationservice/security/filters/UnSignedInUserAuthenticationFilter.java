@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.zano.authenticationservice.authentication.AuthenticationService;
-import com.zano.authenticationservice.jwt.JwtService;
+import com.zano.authenticationservice.jwt.JwtDetailsExtractor;
 import com.zano.authenticationservice.security.SecurityUserDetailsService;
+import com.zano.authenticationservice.user.authentication.UserAuthenticationService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class UnSignedUserAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
-    private final AuthenticationService authenticationService;
+public class UnSignedInUserAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtDetailsExtractor jwtDetailsExtractor;
+    private final UserAuthenticationService authenticationService;
     private final SecurityUserDetailsService securityUserDetailsService;
 
     @Override
@@ -40,9 +40,10 @@ public class UnSignedUserAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        var email = jwtService.extractSubjectFromBearerToken(header);
-        boolean userNotExist = !authenticationService.isUserAuthenticationExists(email);
-        if (userNotExist) {
+        var email = jwtDetailsExtractor.extractSubjectFromBearerToken(header);
+        var token = jwtDetailsExtractor.extractTokenFromAuthorisationHeader(header);
+        boolean isNotValidUserAuthentication = !authenticationService.isValidUserAuthentication(token);
+        if (isNotValidUserAuthentication) {
             filterChain.doFilter(request, response);
             return;
         }

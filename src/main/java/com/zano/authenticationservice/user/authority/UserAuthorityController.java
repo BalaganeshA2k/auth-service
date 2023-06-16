@@ -1,4 +1,4 @@
-package com.zano.authenticationservice.authority;
+package com.zano.authenticationservice.user.authority;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequestMapping("/api/v1/authority")
 @RequiredArgsConstructor
-public class AuthorityController {
-    private final AuthorityService authorityService;
+public class UserAuthorityController {
+    private final UserAuthorityService authorityService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedAuthority createNewAuthority(@RequestBody AuthorityRequest authorityRequest) {
-        return authorityService.createNewAuthority(authorityRequest);
+    public CreatedUserAuthority createNewAuthority(@RequestBody UserAuthorityRequest authorityRequest) {
+        return authorityService.createNewUserAuthority(authorityRequest);
     }
-    
 
 }

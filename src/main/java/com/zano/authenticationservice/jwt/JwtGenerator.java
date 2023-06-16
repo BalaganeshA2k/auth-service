@@ -31,8 +31,7 @@ public class JwtGenerator {
     var token = generateToken(email, tokenDate, Map.of());
     Date expiration = tokenDate.expiration();
     Date issued = tokenDate.issued();
-    var userAuthentication = new UserAuthentication(token, expiration.toString(),
-        issued.toString(), issuer);
+    var userAuthentication = new UserAuthentication(token);
     applicationEventPublisher.publishEvent(new UserAuthenticationEvent(email, issued, expiration));
     return userAuthentication;
   }

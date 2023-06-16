@@ -5,9 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDetailRepository extends JpaRepository<UserDetail, String> {
-  Optional<UserDetail> findOneByUserEmail(String userEmail);
+  Optional<UserDetail> findByUserEmail(String userEmail);
 
   boolean existsByUserEmail(String userEmail);
 
-  Optional<Long> findIdByUserEmail(String userEmail);
 }

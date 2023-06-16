@@ -43,13 +43,13 @@ public class UserDetailRepositoryTest {
     @Test
     public void findOneByUserEmailShouldReturnUserIfExists() {
         userDetailRepository.save(userDetail);
-        var actual = userDetailRepository.findOneByUserEmail("balaganesh.a2k@gmail.com").get();
+        var actual = userDetailRepository.findByUserEmail("balaganesh.a2k@gmail.com").get();
         assertEquals(userDetail, actual, "UserRepository.findOneByUserEmail is not returning saved user value");
     }
 
     @Test
     public void findOneByUserEmailShouldNotReturnUserIfDooesNotExists() {
-        var isUserPresent = userDetailRepository.findOneByUserEmail("balaganesh.a2k@gmail.com").isPresent();
+        var isUserPresent = userDetailRepository.findByUserEmail("balaganesh.a2k@gmail.com").isPresent();
         assertFalse(isUserPresent);
     }
 
