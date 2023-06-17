@@ -6,7 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import com.zano.authenticationservice.user.UserDetailRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserAuthorityService {
     private final UserAuthorityRepository authorityRepository;
+    private final UserDetailRepository userDetailRepository;
 
     public CreatedUserAuthority createNewUserAuthority(UserAuthorityRequest authorityRequest) {
         var authority = authorityRequest.toAuthority();
@@ -33,6 +37,15 @@ public class UserAuthorityService {
     public UserAuthority getUserAuthorityByName(String name) {
         return authorityRepository.findById(name).orElseThrow();
 
+    }
+
+    public UserAuthorities getUserAuthorities(String email) {
+        Set<SimpleGrantedAuthority> userAuthorities = userDetailRepository
+                .findAuthoritiesByUserEmail(email)
+                .stream()
+                .map(UserAuthority::asSimpleGrantedAuthority)
+                .collect(Collectors.toSet());
+        return new UserAuthorities(userAuthorities);
     }
 
 }
