@@ -16,8 +16,8 @@ public class OtpService {
     record OtpGeneratedEvent(Otp otp) {
     }
 
-    public String generateAndSendOtp(EmailRegistration emailRegistration) {
-        var otp = otpGenerator.generateOtpForEmail(emailRegistration.emailId());
+    public String generateAndSendOtp(String emailId) {
+        var otp = otpGenerator.generateOtpForEmail(emailId);
         applicationEventPublisher.publishEvent(new OtpGeneratedEvent(otp));
         return "Otp is sent";
     }

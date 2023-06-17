@@ -36,15 +36,15 @@ public class UserController {
 
     @PostMapping(value = "/api/v1/user")
     @ResponseStatus(ACCEPTED)
-    public UserDetail saveNewUser(
+    public void saveNewUser(
             @Valid @RequestBody NewUser user,
             @Valid @UnRegisteredEmailInHeader @RequestHeader(AUTHORIZATION) String authorisationHeaderValue) {
-        return userDetailService.saveNewUser(user, authorisationHeaderValue);
+        userDetailService.saveNewUser(user, authorisationHeaderValue);
     }
 
     @PostMapping("/api/v1/user/email-id/registration")
     public String sendOtpToEmailId(@Valid @RequestBody EmailRegistration emailRegistration) {
-        return otpService.generateAndSendOtp(emailRegistration);
+        return otpService.generateAndSendOtp(emailRegistration.emailId());
     }
 
 }
