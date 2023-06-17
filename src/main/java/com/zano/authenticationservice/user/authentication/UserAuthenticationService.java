@@ -4,7 +4,6 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.zano.authenticationservice.jwt.JwtDetailsExtractor;
