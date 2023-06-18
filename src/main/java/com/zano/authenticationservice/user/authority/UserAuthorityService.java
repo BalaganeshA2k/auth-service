@@ -28,7 +28,7 @@ public class UserAuthorityService {
 
     public Set<UserAuthority> getDefaultUserAuthority() {
         return authorityRepository
-                .findById(ROLE_USER.name()).map(Stream::of)
+                .findByAuthority(ROLE_USER.name()).map(Stream::of)
                 .orElseThrow()
                 .collect(Collectors.toSet());
 
