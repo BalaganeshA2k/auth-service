@@ -8,4 +8,6 @@ public interface UserAuthorityRepository extends JpaRepository<UserAuthority, St
 
     Optional<UserAuthority> findByAuthority(String name);
 
+    boolean existsByAuthority(String authority);
+
 }

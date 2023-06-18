@@ -23,7 +23,7 @@ public class UserAuthority implements GrantedAuthority {
   @Id
   @GeneratedValue(strategy = SEQUENCE)
   private int id;
-  @Column(nullable = false, unique = true)
+  @Column(unique = true, updatable = false)
   private String authority;
 
   public SimpleGrantedAuthority asSimpleGrantedAuthority() {
