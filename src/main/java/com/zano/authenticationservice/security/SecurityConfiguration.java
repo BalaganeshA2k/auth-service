@@ -1,5 +1,6 @@
 package com.zano.authenticationservice.security;
 
+import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
 import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
 import static org.springframework.http.HttpMethod.GET;
@@ -48,12 +49,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers(POST, "/api/v1/user/email-id/registration").permitAll()
+                                .requestMatchers(POST, "/api/v1/users/email-id").permitAll()
                                 .requestMatchers(GET, "/api/v1/user/otp/authentication").permitAll()
                                 .requestMatchers(POST, "/api/v1/user/password/authentication").permitAll()
                                 .requestMatchers(GET, "/api/v1/user/authorities").permitAll()
                                 .requestMatchers(GET, "/api/v1/user/authentication/validation").permitAll()
-                                .requestMatchers(GET, "/api/v1/user/availability/*")
+                                .requestMatchers(GET, "/api/v1/users/usernames/availability")
                                 .hasAnyAuthority(ROLE_NEW_USER.name())
                                 .requestMatchers(POST, "/api/v1/user").hasAnyAuthority(ROLE_NEW_USER.name())
                                 .requestMatchers(GET, "/api/v1/user/token/authentication")

@@ -3,8 +3,6 @@ package com.zano.authenticationservice.otp;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import com.zano.authenticationservice.user.dto.EmailRegistration;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
