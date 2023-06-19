@@ -24,6 +24,9 @@ Auth service could be deployed to work with api gateways and other microservices
 ```properties
 application.security.jwt.secret-key=
 application.security.jwt.expiration.day=
+application.root.user.name=root
+application.root.user.email=${spring.mail.username}
+application.root.user.password=root
 
 user.sign-in.otp.expirtation.seconds=
 user.sign-in.otp.length=
