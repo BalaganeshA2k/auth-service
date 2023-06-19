@@ -1,6 +1,6 @@
 package com.zano.authenticationservice.user.authority;
 
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_USER;
 
 import java.util.Set;
 import java.util.stream.Collectors;

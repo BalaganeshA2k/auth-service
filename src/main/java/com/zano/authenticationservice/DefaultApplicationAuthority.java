@@ -1,6 +1,6 @@
 package com.zano.authenticationservice;
 
-public enum ApplicationRoles {
+public enum DefaultApplicationAuthority {
     ROLE_ROOT,
     ROLE_USER,
     ROLE_ADMIN,

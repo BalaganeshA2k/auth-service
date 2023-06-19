@@ -1,9 +1,9 @@
 package com.zano.authenticationservice.security;
 
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_ROOT;
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_ADMIN;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_NEW_USER;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_ROOT;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_USER;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 

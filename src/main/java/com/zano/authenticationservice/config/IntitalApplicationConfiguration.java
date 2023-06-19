@@ -16,7 +16,7 @@ import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.zano.authenticationservice.ApplicationRoles;
+import com.zano.authenticationservice.DefaultApplicationAuthority;
 import com.zano.authenticationservice.user.UserDetail;
 import com.zano.authenticationservice.user.UserDetailRepository;
 import com.zano.authenticationservice.user.authority.UserAuthority;
@@ -74,7 +74,7 @@ public class IntitalApplicationConfiguration {
     }
 
     private void saveApplicationAuthorityDefaultsIfNotPresent() {
-        Arrays.stream(ApplicationRoles.values())
+        Arrays.stream(DefaultApplicationAuthority.values())
                 .map(authority -> UserAuthority.builder()
                         .authority(authority.name())
                         .build())
@@ -91,7 +91,8 @@ public class IntitalApplicationConfiguration {
     }
 
     private Set<UserAuthority> getRootAuthority() {
-        var rootAuthority = authorityRepository.findByAuthority(ApplicationRoles.ROLE_ROOT.name()).orElseThrow();
+        var rootAuthority = authorityRepository.findByAuthority(DefaultApplicationAuthority.ROLE_ROOT.name())
+                .orElseThrow();
         return Set.of(rootAuthority);
     }
 

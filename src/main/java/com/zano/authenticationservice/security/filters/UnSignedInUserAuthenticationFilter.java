@@ -1,6 +1,6 @@
 package com.zano.authenticationservice.security.filters;
 
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
+import static com.zano.authenticationservice.DefaultApplicationAuthority.ROLE_NEW_USER;
 
 import java.io.IOException;
 
