@@ -1,15 +1,13 @@
 package com.zano.authenticationservice.config;
 
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_ADMIN;
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_NEW_USER;
-import static com.zano.authenticationservice.ApplicationRoles.ROLE_USER;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Clock;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,7 @@ import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.zano.authenticationservice.ApplicationRoles;
 import com.zano.authenticationservice.user.UserDetail;
 import com.zano.authenticationservice.user.UserDetailRepository;
 import com.zano.authenticationservice.user.authority.UserAuthority;
@@ -32,6 +31,20 @@ public class IntitalApplicationConfiguration {
     private final UserAuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${application.root.user.name:root}")
+    private String username;
+    @Value("${application.root.user.email}")
+    private String userEmail;
+    @Value("${application.root.user.password:root}")
+    private String password;
+
+    @Bean
+    ApplicationEventMulticaster applicationEventMulticaster() {
+        var multicaster = new SimpleApplicationEventMulticaster();
+        multicaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        return multicaster;
+    }
+
     @Bean
     Random random() throws NoSuchAlgorithmException {
         return SecureRandom.getInstanceStrong();
@@ -45,44 +58,41 @@ public class IntitalApplicationConfiguration {
     @Bean
     CommandLineRunner commandLineRunner() {
         return cliInput -> {
-            authorityRepository.save(defaultUserAuthority());
-            authorityRepository.save(newUserAuthority());
-            userDetailRepository.save(defaultAdminUser());
+            this.saveApplicationAuthorityDefaultsIfNotPresent();
+            this.saveRootUserIfNotPresent();
         };
     }
 
-    @Bean
-    ApplicationEventMulticaster applicationEventMulticaster() {
-        var multicaster = new SimpleApplicationEventMulticaster();
-        multicaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-        return multicaster;
+    private void saveRootUserIfNotPresent() {
+        if (!userDetailRepository.existsByUserEmail(userEmail))
+            userDetailRepository.save(rootUser());
     }
 
-    private UserAuthority newUserAuthority() {
-        return UserAuthority.builder()
-                .authority(ROLE_NEW_USER.name())
-                .build();
+    private void saveAuthorityIfNotPresent(UserAuthority userAuthority) {
+        if (!authorityRepository.existsByAuthority(userAuthority.getAuthority()))
+            authorityRepository.save(userAuthority);
     }
 
-    private UserAuthority defaultUserAuthority() {
-        return UserAuthority.builder()
-                .authority(ROLE_USER.name())
-                .build();
+    private void saveApplicationAuthorityDefaultsIfNotPresent() {
+        Arrays.stream(ApplicationRoles.values())
+                .map(authority -> UserAuthority.builder()
+                        .authority(authority.name())
+                        .build())
+                .forEach(this::saveAuthorityIfNotPresent);
     }
 
-    private UserDetail defaultAdminUser() {
+    private UserDetail rootUser() {
         return UserDetail.builder()
-                .username("admin")
-                .userEmail("admin.zano@gmail.com")
-                .password(passwordEncoder.encode("admin"))
-                .authorities(Set.of(defaultAdminAuthority()))
+                .username(username)
+                .userEmail(userEmail)
+                .password(passwordEncoder.encode(password))
+                .authorities(getRootAuthority())
                 .build();
     }
 
-    private UserAuthority defaultAdminAuthority() {
-        return UserAuthority.builder()
-                .authority(ROLE_ADMIN.name())
-                .build();
+    private Set<UserAuthority> getRootAuthority() {
+        var rootAuthority = authorityRepository.findByAuthority(ApplicationRoles.ROLE_ROOT.name()).orElseThrow();
+        return Set.of(rootAuthority);
     }
 
 }
